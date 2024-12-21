@@ -1,25 +1,35 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.2.2'
-    id 'io.spring.dependency-management' version '1.1.4'
+  id 'java'
+  id 'org.springframework.boot' version '3.2.2'
+  id 'io.spring.dependency-management' version '1.1.4'
+  id 'com.diffplug.spotless' version '6.25.0'
 }
 
 group = 'com.exsoinn'
 version = '0.0.1-SNAPSHOT'
 
+spotless {
+  java {
+    palantirJavaFormat()
+    removeUnusedImports()
+    trimTrailingWhitespace()
+    endWithNewline()
+  }
+}
+
 java {
-    sourceCompatibility = '17'
+  sourceCompatibility = '17'
 }
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+  implementation 'org.springframework.boot:spring-boot-starter'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  implementation 'org.projectlombok:lombok'
+  annotationProcessor 'org.projectlombok:lombok'
 }
 
 springBoot {
@@ -27,5 +37,5 @@ springBoot {
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }

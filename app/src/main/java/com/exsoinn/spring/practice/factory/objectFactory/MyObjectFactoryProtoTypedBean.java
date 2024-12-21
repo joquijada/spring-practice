@@ -1,10 +1,13 @@
 package com.exsoinn.spring.practice.factory.objectFactory;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MyObjectFactoryProtoTypedBean {
-    private final String member;
+    String member;
 
     public void printMember() {
         System.out.println(this.member);

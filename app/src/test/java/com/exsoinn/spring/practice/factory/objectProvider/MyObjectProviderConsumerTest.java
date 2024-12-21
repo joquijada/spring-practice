@@ -1,11 +1,11 @@
 package com.exsoinn.spring.practice.factory.objectProvider;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @SpringBootTest
 class MyObjectProviderConsumerTest {
@@ -13,10 +13,22 @@ class MyObjectProviderConsumerTest {
     private MyObjectProviderConsumer myObjectProviderConsumer;
 
     @Test
-    public void objectProviderProducesCorrectly() {
+    void objectProviderProducesCorrectly() {
         String payload = "Object provider produced object - TEST";
         assertEquals(payload, myObjectProviderConsumer.consume(payload).getMember());
-        assertEquals(payload + payload, myObjectProviderConsumer.consume(payload + payload).getMember());
+        assertEquals(
+                payload + payload,
+                myObjectProviderConsumer.consume(payload + payload).getMember());
+    }
+
+    /**
+     * Because the bean that the ObjectProvider produces
+     */
+    @Test
+    void differentObjectProviderInstancesAreProducedEachTime() {
+        assertNotEquals(
+                myObjectProviderConsumer.consume("").getThis(),
+                myObjectProviderConsumer.consume("").getThis());
     }
 
     /**
@@ -24,8 +36,8 @@ class MyObjectProviderConsumerTest {
      * marked as prototyped.
      */
     @Test
-    public void beanGetsPrototypedCorrectly() {
-        assertNotEquals(myObjectProviderConsumer.getMyProtoTypedBeanOne(), myObjectProviderConsumer.getMyProtoTypedBeanThree());
+    void beanGetsPrototypedCorrectly() {
+        assertNotEquals(
+                myObjectProviderConsumer.getMyProtoTypedBeanOne(), myObjectProviderConsumer.getMyProtoTypedBeanThree());
     }
-
 }
