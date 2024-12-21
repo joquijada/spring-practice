@@ -14,5 +14,6 @@ class MatchingVariableAndBeanNameServiceTest {
     @Test
     void componentsAreAutowiredBasedOnMatchingVariableAndBeanName() {
         assertNotNull(matchingVariableAndBeanNameService.getMatchingVariableAndBeanNameComponentOne());
+        assertEquals();
     }
 }
