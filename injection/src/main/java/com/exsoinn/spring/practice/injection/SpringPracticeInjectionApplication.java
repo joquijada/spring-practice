@@ -1,11 +1,11 @@
-package com.exsoinn.spring.practice;
+package com.exsoinn.spring.practice.injection;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringPracticeApplication {
+public class SpringPracticeInjectionApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SpringPracticeApplication.class, args);
+        SpringApplication.run(SpringPracticeInjectionApplication.class, args);
     }
 }

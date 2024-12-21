@@ -1,5 +1,6 @@
 package com.exsoinn.spring.practice.injection.matchingVariableAndBeanName.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,10 @@ class MatchingVariableAndBeanNameServiceTest {
     @Test
     void componentsAreAutowiredBasedOnMatchingVariableAndBeanName() {
         assertNotNull(matchingVariableAndBeanNameService.getMatchingVariableAndBeanNameComponentOne());
-        assertEquals();
+        assertEquals(
+                "I'm MatchingVariableAndBeanNameComponentOne",
+                matchingVariableAndBeanNameService
+                        .getMatchingVariableAndBeanNameComponentOne()
+                        .getName());
     }
 }

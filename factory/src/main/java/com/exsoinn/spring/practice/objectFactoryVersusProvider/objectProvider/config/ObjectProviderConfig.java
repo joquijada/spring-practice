@@ -1,4 +1,4 @@
-package com.exsoinn.spring.practice.factory.objectProvider.config;
+package com.exsoinn.spring.practice.objectFactoryVersusProvider.objectProvider.config;
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
