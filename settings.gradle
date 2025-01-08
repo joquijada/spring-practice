@@ -9,3 +9,4 @@
 rootProject.name = 'spring-practice'
 include 'factory'
 include 'injection'
+include 'lifecycle'
