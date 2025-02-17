@@ -6,9 +6,9 @@ import org.springframework.context.event.EventListener;
 
 public abstract class AbstractService {
     @EventListener(ApplicationReadyEvent.class)
-    public void init(ApplicationEvent event) {
+    public void init() {
         // Common logic for handling the event
         System.out.println(
-                "Event received in abstract class: " + event.getClass().getName());
+                "Event received in abstract class: ");
     }
 }
