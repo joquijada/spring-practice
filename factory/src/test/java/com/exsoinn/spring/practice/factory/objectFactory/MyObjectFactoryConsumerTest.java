@@ -1,5 +1,6 @@
 package com.exsoinn.spring.practice.factory.objectFactory;
 
+import com.exsoinn.spring.practice.factory.objectFactoryVersusProvider.objectFactory.MyObjectFactoryConsumer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

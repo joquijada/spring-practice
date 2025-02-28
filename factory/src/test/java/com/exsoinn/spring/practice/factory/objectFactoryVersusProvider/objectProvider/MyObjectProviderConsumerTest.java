@@ -1,4 +1,4 @@
-package com.exsoinn.spring.practice.factory.objectProvider;
+package com.exsoinn.spring.practice.factory.objectFactoryVersusProvider.objectProvider;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
