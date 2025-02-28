@@ -2,7 +2,7 @@ package com.exsoinn.spring.practice.objectFactoryVersusProvider.objectProvider.c
 
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
-import com.exsoinn.spring.practice.factory.objectProvider.MyObjectProviderProtoTypedBean;
+import com.exsoinn.spring.practice.objectFactoryVersusProvider.objectProvider.MyObjectProviderProtoTypedBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
