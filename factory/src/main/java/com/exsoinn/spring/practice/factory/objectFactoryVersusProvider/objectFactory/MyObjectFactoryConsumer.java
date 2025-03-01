@@ -1,4 +1,4 @@
-package com.exsoinn.spring.practice.objectFactoryVersusProvider.objectFactory;
+package com.exsoinn.spring.practice.factory.objectFactoryVersusProvider.objectFactory;
 
 import lombok.AccessLevel;
 import lombok.Getter;

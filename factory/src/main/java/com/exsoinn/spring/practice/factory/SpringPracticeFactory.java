@@ -6,6 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SpringPracticeFactory {
     public static void main(String[] args) {
-        SpringApplication.run(SpringPracticeApplication.class, args);
+        SpringApplication.run(SpringPracticeFactory.class, args);
     }
 }
