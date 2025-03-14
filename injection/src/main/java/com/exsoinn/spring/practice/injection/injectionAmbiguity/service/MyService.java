@@ -1,4 +1,4 @@
-package com.exsoinn.spring.practice.injection.service;
+package com.exsoinn.spring.practice.injection.injectionAmbiguity.service;
 
 import com.exsoinn.spring.practice.injection.injectionAmbiguity.repository.MyRepo;
 import lombok.AccessLevel;
