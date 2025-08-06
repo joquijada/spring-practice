@@ -14,10 +14,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
- * Play around with how Spring bean aliasing works, in case I want to associate the sam eBean instance but
+ * Play around with how Spring bean aliasing works, in case I want to associate the same Bean instance but
  * with different name handles. Use case on 03/13/2025 in Solventum (my last two weeks, last day 03/31/2025)
  * is to associate the same GriffinServiceXyz with different message types from Orchestration for purposes of
- * maintaining D2b and OPCDI pipelines separate.
+ * maintaining D2B and OPCDI pipelines separate.
  * Bean aliasing only works when Bean is added to Spring context via @Bean annotation. I tried @Component
  * but alas that feature is not supported yet, [REF|https://medium.com/@haominglfs/the-bean-alias-of-springboot-4833834d948f|"the @Component annotation can only configure one name, while the @Bean annotation can configure aliases"],
  * [REF|https://stackoverflow.com/questions/39916574/names-and-aliases-using-bean-and-component-in-spring|"This is still a feature request https://jira.spring.io/browse/SPR-6736"]
