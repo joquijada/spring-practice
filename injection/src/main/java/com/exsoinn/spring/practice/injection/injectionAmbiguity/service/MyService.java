@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service
+@Service("myServiceInjectionAmbiguity")
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MyService {
     /*

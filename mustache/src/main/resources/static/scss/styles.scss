@@ -1,0 +1,217 @@
+// Variables
+$primary-color: #2c3e50;
+$secondary-color: #3498db;
+$accent-color: #e74c3c;
+$success-color: #27ae60;
+$background-gradient-start: #667eea;
+$background-gradient-end: #764ba2;
+$card-background: #ffffff;
+$text-color: #333;
+$label-color: #555;
+$border-color: #ddd;
+$box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+$hover-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+
+// Mixins
+@mixin card-style {
+  background: $card-background;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: $box-shadow;
+  margin-bottom: 20px;
+}
+
+@mixin button-style {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $hover-shadow;
+  }
+}
+
+// Base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, $background-gradient-start 0%, $background-gradient-end 100%);
+  min-height: 100vh;
+  padding: 20px;
+  color: $text-color;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+
+  h1 {
+    color: $card-background;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Form section
+.form-section {
+  @include card-style;
+
+  h2 {
+    color: $primary-color;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 3px solid $secondary-color;
+    padding-bottom: 10px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        color: $label-color;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      input[type="text"] {
+        padding: 12px;
+        border: 2px solid $border-color;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          outline: none;
+          border-color: $secondary-color;
+          box-shadow: 0 0 0 3px rgba($secondary-color, 0.1);
+        }
+      }
+    }
+
+    .btn-submit {
+      @include button-style;
+      background: $secondary-color;
+      color: white;
+      margin-top: 10px;
+
+      &:hover {
+        background: darken($secondary-color, 10%);
+      }
+    }
+  }
+}
+
+// Records section
+.records-section {
+  @include card-style;
+
+  h2 {
+    color: $primary-color;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    border-bottom: 3px solid $success-color;
+    padding-bottom: 10px;
+  }
+
+  .no-records {
+    text-align: center;
+    color: $label-color;
+    font-style: italic;
+    padding: 30px;
+    background: rgba($secondary-color, 0.05);
+    border-radius: 5px;
+  }
+
+  .records-list {
+    display: grid;
+    gap: 15px;
+
+    .record-card {
+      background: linear-gradient(135deg, rgba($secondary-color, 0.05) 0%, rgba($success-color, 0.05) 100%);
+      border: 2px solid $border-color;
+      border-radius: 8px;
+      padding: 15px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateX(5px);
+        border-color: $secondary-color;
+        box-shadow: $hover-shadow;
+      }
+
+      .record-id {
+        color: $label-color;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid $border-color;
+      }
+
+      .record-field {
+        display: flex;
+        margin: 8px 0;
+        gap: 10px;
+
+        .field-label {
+          color: $label-color;
+          font-weight: 600;
+          min-width: 80px;
+        }
+
+        .field-value {
+          color: $text-color;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .container {
+    h1 {
+      font-size: 1.8em;
+    }
+  }
+
+  .form-section,
+  .records-section {
+    h2 {
+      font-size: 1.4em;
+    }
+  }
+
+  .record-field {
+    flex-direction: column;
+    gap: 5px !important;
+
+    .field-label {
+      min-width: auto !important;
+    }
+  }
+}

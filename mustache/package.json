@@ -1,0 +1,12 @@
+{
+  "name": "mustache-demo",
+  "version": "1.0.0",
+  "description": "Alaska DOH Integrated Eligibility Platform - Person Registration Demo",
+  "scripts": {
+    "build:css": "sass src/main/resources/static/scss/styles.scss src/main/resources/static/css/styles.css",
+    "watch:css": "sass --watch src/main/resources/static/scss/styles.scss src/main/resources/static/css/styles.css"
+  },
+  "devDependencies": {
+    "sass": "^1.69.5"
+  }
+}

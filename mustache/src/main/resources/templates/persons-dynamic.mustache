@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Person Registration - Dynamic</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Additional styles for dynamic features */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .btn-cancel {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-update {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-update:hover {
+            background: #229954;
+        }
+
+        .editing {
+            background: rgba(52, 152, 219, 0.1) !important;
+            border: 2px solid #3498db !important;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .error-message {
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message {
+            background: #27ae60;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .edit-form {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 5px;
+            border: 1px solid #3498db;
+        }
+
+        .edit-form.active {
+            display: block;
+        }
+
+        .edit-form .form-group {
+            margin-bottom: 10px;
+        }
+
+        .edit-form input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Alaska DOH - Person Registration Demo (Dynamic)</h1>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <div class="form-section">
+            <h2>Register New Person</h2>
+            <form id="personForm">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <button type="submit" class="btn-submit">Submit</button>
+            </form>
+        </div>
+
+        <div class="records-section">
+            <h2>Registered Persons</h2>
+            <div id="recordsList" class="records-list">
+                <p class="no-records">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API endpoints
+        const API_BASE = '/api/persons';
+
+        // State
+        let editingId = null;
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPersons();
+            setupFormHandler();
+        });
+
+        // Load all persons from the API
+        function loadPersons() {
+            fetch(API_BASE)
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to load persons');
+                    return response.json();
+                })
+                .then(persons => {
+                    renderPersons(persons);
+                })
+                .catch(error => {
+                    showError('Failed to load persons: ' + error.message);
+                });
+        }
+
+        // Render persons list
+        function renderPersons(persons) {
+            const recordsList = document.getElementById('recordsList');
+
+            if (persons.length === 0) {
+                recordsList.innerHTML = '<p class="no-records">No persons registered yet. Use the form above to add the first person.</p>';
+                return;
+            }
+
+            recordsList.innerHTML = persons.map(person => `
+                <div class="record-card" data-id="${person.id}" id="person-${person.id}">
+                    <div class="record-id">ID: ${person.id}</div>
+                    <div class="record-field">
+                        <span class="field-label">Name:</span>
+                        <span class="field-value" id="name-${person.id}">${escapeHtml(person.name)}</span>
+                    </div>
+                    <div class="record-field">
+                        <span class="field-label">Address:</span>
+                        <span class="field-value" id="address-${person.id}">${escapeHtml(person.address)}</span>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-edit" onclick="startEdit(${person.id}, '${escapeHtml(person.name)}', '${escapeHtml(person.address)}')">Edit</button>
+                        <button class="btn btn-delete" onclick="deletePerson(${person.id})">Delete</button>
+                    </div>
+                    <div class="edit-form" id="edit-form-${person.id}">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input type="text" id="edit-name-${person.id}" value="${escapeHtml(person.name)}">
+                        </div>
+                        <div class="form-group">
+                            <label>Address:</label>
+                            <input type="text" id="edit-address-${person.id}" value="${escapeHtml(person.address)}">
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-update" onclick="updatePerson(${person.id})">Update</button>
+                            <button class="btn btn-cancel" onclick="cancelEdit(${person.id})">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Setup form submission handler
+        function setupFormHandler() {
+            const form = document.getElementById('personForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value;
+                const address = document.getElementById('address').value;
+
+                createPerson(name, address);
+            });
+        }
+
+        // Create a new person
+        function createPerson(name, address) {
+            const form = document.getElementById('personForm');
+            form.classList.add('loading');
+
+            fetch(API_BASE, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, address })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to create person');
+                return response.json();
+            })
+            .then(person => {
+                showSuccess('Person created successfully!');
+                form.reset();
+                loadPersons();
+            })
+            .catch(error => {
+                showError('Failed to create person: ' + error.message);
+            })
+            .finally(() => {
+                form.classList.remove('loading');
+            });
+        }
+
+        // Start editing a person
+        function startEdit(id, name, address) {
+            // Cancel any existing edit
+            if (editingId !== null) {
+                cancelEdit(editingId);
+            }
+
+            editingId = id;
+            const card = document.getElementById('person-' + id);
+            const editForm = document.getElementById('edit-form-' + id);
+
+            card.classList.add('editing');
+            editForm.classList.add('active');
+        }
+
+        // Cancel editing
+        function cancelEdit(id) {
+            const card = document.getElementById('person-' + id);
+            const editForm = document.getElementById('edit-form-' + id);
+
+            card.classList.remove('editing');
+            editForm.classList.remove('active');
+            editingId = null;
+        }
+
+        // Update a person
+        function updatePerson(id) {
+            const name = document.getElementById('edit-name-' + id).value;
+            const address = document.getElementById('edit-address-' + id).value;
+
+            if (!name || !address) {
+                showError('Name and address are required');
+                return;
+            }
+
+            const card = document.getElementById('person-' + id);
+            card.classList.add('loading');
+
+            fetch(API_BASE + '/' + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, address })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to update person');
+                return response.json();
+            })
+            .then(person => {
+                showSuccess('Person updated successfully!');
+                cancelEdit(id);
+                loadPersons();
+            })
+            .catch(error => {
+                showError('Failed to update person: ' + error.message);
+            })
+            .finally(() => {
+                card.classList.remove('loading');
+            });
+        }
+
+        // Delete a person
+        function deletePerson(id) {
+            if (!confirm('Are you sure you want to delete this person?')) {
+                return;
+            }
+
+            const card = document.getElementById('person-' + id);
+            card.classList.add('loading');
+
+            fetch(API_BASE + '/' + id, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to delete person');
+                showSuccess('Person deleted successfully!');
+                loadPersons();
+            })
+            .catch(error => {
+                showError('Failed to delete person: ' + error.message);
+                card.classList.remove('loading');
+            });
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+            setTimeout(() => {
+                errorEl.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const successEl = document.getElementById('successMessage');
+            successEl.textContent = message;
+            successEl.style.display = 'block';
+            setTimeout(() => {
+                successEl.style.display = 'none';
+            }, 3000);
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
